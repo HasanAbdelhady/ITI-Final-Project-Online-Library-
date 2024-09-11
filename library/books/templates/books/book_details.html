@@ -29,13 +29,24 @@
             <!-- Book Details Section -->
             <div class="md:w-2/3 md:pl-6">
                 <h1 class="text-4xl font-bold text-gray-800 mb-4">
-                    {{ book.name}}</h1>
+                    {{ book.name }}</h1>
                 <p class="text-xl text-gray-600 mb-4">{{ book.description }}</p>
                 <p class="text-lg text-gray-700 mb-4">Category:
-                    {{book.category}}</p>
+                    {{ book.category }}</p>
                 <p class="text-lg text-gray-700 mb-4">Copies Left:
-                    {{book.copies_left }}</p>
+                    {{ book.copies_left }}</p>
 
+                <!-- Admin Actions -->
+                {% if request.user.is_superuser %}
+                <div class="mb-4">
+                    <a href="{% url 'book.edit' book.id %}"
+                        class="inline-block bg-yellow-500 text-black font-bold py-2 px-4 rounded hover:bg-yellow-600">
+                        Edit Book
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- User Actions -->
                 {% if request.user.is_authenticated %}
                 {% if has_borrowed %}
                 <form action="{% url 'book.return' book.id %}" method="post">
@@ -46,6 +57,7 @@
                     </button>
                 </form>
                 {% else %}
+
                 <form action="{% url 'book.borrow' book.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit"
