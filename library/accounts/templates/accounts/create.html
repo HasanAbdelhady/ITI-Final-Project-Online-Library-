@@ -1,0 +1,51 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Register</h1>
+
+        <!-- Form error summary (non-field errors) -->
+        {% if form.non_field_errors %}
+        <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
+            <ul>
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Displaying field-specific errors -->
+            {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}"
+                    class="block text-gray-700 font-semibold">
+                    {{ field.label}}</label>
+
+                <!-- Field rendering -->
+                {{ field }}
+
+                <!-- Display errors for this field -->
+                {% if field.errors %}
+                <div class="text-red-500 text-sm mt-1">
+                    {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit"
+                class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                Register
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

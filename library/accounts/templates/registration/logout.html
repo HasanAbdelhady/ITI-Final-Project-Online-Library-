@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Logout{% endblock %}
+
+{% block body %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+        <h2 class="text-2xl font-bold mb-6">Logout</h2>
+        <p>You have been successfully logged out.</p>
+        <a href="{% url 'login' %}" class="text-blue-500">Return to login
+            page</a>
+        <a href="{% url 'home' %}" class="ml-4 text-blue-500">Go to home</a>
+    </div>
+</div>
+{% endblock %}

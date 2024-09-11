@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}{% endblock title %}</title>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <link rel="icon" href="{% static 'books/images/logo.png' %}" />
+    </head>
+    <body>
+        <nav class="w-full bg-gray-900 text-xl">
+            <div
+                class="max-w-screen-2xl flex flex-wrap items-center justify-center mx-auto">
+                <a href="{% url 'home' %}"
+                    class="flex items-center space-x-3 rtl:space-x-reverse mr-auto">
+                    <img src="{% static 'books/images/logo.png' %}"
+                        class="h-16 my-2 overflow-clip" alt="Flowbite Logo" />
+                </a>
+                <div class="hidden w-full md:block md:w-auto"
+                    id="navbar-default">
+                    <ul
+                        class="flex justify-center flex-grow w-full font-bold flex-col md:p-0 mt-2 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <li>
+                            <a href="{% url 'home' %}"
+                                class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-green-500"
+                                aria-current="page">Home</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Categories</a>
+                        </li>
+                        {% if request.user.is_superuser %}
+                        <li>
+                            <a href="{% url 'book.add' %}"
+                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add
+                                Book</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add
+                                New Category</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Admin
+                                Dashboard</a>
+                        </li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li>
+                            <a href="#"
+                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Change
+                                Credentials</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <input type="submit"
+                                    class="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md cursor-pointer"
+                                    value="Logout">
+                            </form>
+                        </li>
+                        <li class="ml-4 text-white font-semibold">
+                            {{ user }}
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}"
+                                class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">Login</a>
+                        </li>
+                        <li class="nav-item ml-4">
+                            <a href="{% url 'register' %}"
+                                class="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="bg-gray-100 h-svh max-h-screen">
+            {% block body %}{% endblock body %}
+        </div>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}
+Online Library
+{% endblock title %}
+{% block body %}
+<div class="flex  justify-center bg-gray-100 min-h-screen py-10">
+  <div class="w-full max-w-5xl">
+    <table class="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+      <thead class="bg-green-800 text-white text-xl">
+        <tr>
+          <th class="py-4 px-6 font-semibold text-center">Book
+            Name</th>
+          <th class="py-4 px-6 font-semibold text-center">Book (Click
+            for details)</th>
+          <th class="py-4 px-6 font-semibold text-center">Copies Left</th>
+          {%if request.user.is_superuser%}
+          <th class="py-4 px-6 font-semibold text-center">Delete
+            Product</th>
+          {%endif%}
+        </tr>
+      </thead>
+      <tbody class="text-gray-700 divide-y divide-gray-200">
+        {% for book in books %}
+        <tr class="hover:bg-gray-50 transition duration-300 ease-in-out">
+          <td class="py-4 font-medium text-center text-lg">
+            {{ book.name}}</td>
+          <td class="py-4">
+            <a href="{% url 'book.details' book.id %}">
+              <img
+                class="w-24 object-fill  mx-auto hover:scale-110 transition duration-300 ease-in-out"
+                src="{{ book.image_url }}"
+                alt="{{ book.name }}">
+            </a>
+          </td>
+          <td class="py-4 font-medium text-center text-lg">
+            {{ book.copies_left}}</td>
+          {%if request.user.is_superuser%}
+          <td class="py-4 text-center">
+            <a href="{% url 'book.delete' book.id %}"
+              class="text-red-500 hover:text-red-700 font-semibold">
+              <button
+                class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300">Delete</button>
+            </a>
+          </td>
+          {%endif%}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock body %}
