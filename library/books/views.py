@@ -56,9 +56,9 @@ class CreateBook(CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            product = form.save(commit=False)
-            product.user = self.request.user 
-            product.save()
+            book = form.save(commit=False)
+            book.user = self.request.user 
+            book.save()
             return redirect('home')
         
 @method_decorator(login_required, name='dispatch')

@@ -9,9 +9,9 @@ from .models import Student
 from django.utils.decorators import method_decorator
 
 
-# @login_required
-# def profile(request):
-#     return redirect(reverse("home"))
+@login_required
+def profile(request):
+    return redirect(reverse("home"))
 
 @method_decorator(login_required, name='dispatch')
 class AccountsDetailView(LoginRequiredMixin, DetailView):
