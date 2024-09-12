@@ -17,7 +17,7 @@
         </div>
         {% endif %}
 
-        <form method="post" class="space-y-4">
+        <form method="post" class="space-y-4" enctype="multipart/form-data">
             {% csrf_token %}
 
             <!-- Displaying field-specific errors -->
