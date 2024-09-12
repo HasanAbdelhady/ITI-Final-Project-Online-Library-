@@ -3,25 +3,18 @@ from django.db import models
 from books.models import Book
 from django.utils import timezone
 
-class Student(AbstractUser):
-    email = models.EmailField(unique=True)
+class Student(AbstractUser):  # Inherit from AbstractUser
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     borrowed_books = models.ManyToManyField(Book, through='BorrowedBook')
 
-    # Add related_name for groups and user_permissions to avoid conflict with auth.User
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='student_groups',
-        blank=True
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='student_user_permissions',
-        blank=True
-    )
-
     def __str__(self):
-        return self.username
+        return self.username  # This comes from AbstractUser
+
+    @property
+    def image_url(self):
+        return f'/media/{self.profile_image}'
+    
+
 
 class BorrowedBook(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='borrowed_books_set')
