@@ -9,7 +9,10 @@
         <h5 class="card-title">{{user.name}}</h5>
         <h5 class="card-title">{{user.id}}</h5>
         <p class="card-text"> {{user.email}} </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        {% if request.user.is_superuser %}
+        <a href="{%url 'password_change'%}" class="btn btn-primary">change password</a>
+        {% endif %}
+        <a href="{%url 'profile_edit'%}" class="btn btn-primary">Edit</a>
     </div>
 </div>
 

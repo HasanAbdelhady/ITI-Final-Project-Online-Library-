@@ -1,0 +1,10 @@
+{% extends "layouts/base.html" %}
+
+{% block body %}
+  <h2>Add New Category</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

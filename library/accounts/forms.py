@@ -21,3 +21,16 @@ class RegistrationForm(UserCreationForm):
 
 class BorrowBookForm(forms.Form):
     book = forms.ModelChoiceField(queryset=Book.objects.all(), label="Select a book to borrow")
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['username', 'email', 'profile_image']  # Adjust fields as needed
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })

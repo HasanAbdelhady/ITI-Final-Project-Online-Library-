@@ -1,14 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
-from .models import Book
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, CreateView, UpdateView
-from .forms import BookForm
+from django.views.generic import DeleteView, DetailView, CreateView, UpdateView, ListView
+from .forms import BookForm, CategoryForm
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.views import View
-from .models import Book
+from .models import Book, Category
 from accounts.models import BorrowedBook
 from django.contrib import messages
 from django.utils import timezone
@@ -105,3 +103,15 @@ class ReturnBookView(View):
             messages.error(request, "You haven't borrowed this book.")
 
         return redirect('book.details', pk=book_id)
+    
+
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'categories/category_form.html'
+    success_url = reverse_lazy('category_list')
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'categories/category_list.html'
+    context_object_name = 'categories'

@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %}
+
+{% block body %}
+  <h2>Category List</h2>
+  {% if request.user.is_superuser%}
+  <a href="{% url 'category_add' %}">Add New Category</a>
+  {% endif %}
+  <ul>
+    {% for category in categories %}
+      <li>{{ category.name }} - {{ category.description }}</li>
+    {% empty %}
+      <li>No categories available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

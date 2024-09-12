@@ -1,5 +1,11 @@
 from django import forms
-from books.models import Book
+from books.models import Book, Category
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description']
 
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
