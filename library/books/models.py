@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -21,7 +21,7 @@ class Book(models.Model):
     def image_url(self):
         return f'/media/{self.image}'
     
-    # @property
-    # def show_url(self):
-    #     url = reverse("one_product.index", args=[self.id])
-    #     return url
+    @property
+    def show_url(self):
+        url = reverse("book.details", args=[self.id])
+        return url
