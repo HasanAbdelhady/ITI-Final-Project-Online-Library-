@@ -43,11 +43,12 @@
                         class="inline-block bg-yellow-500 text-black font-bold py-2 px-4 rounded hover:bg-yellow-600">
                         Edit Book
                     </a>
+                    
                 </div>
                 {% endif %}
 
                 <!-- User Actions -->
-                {% if request.user.is_authenticated %}
+                {% if is_student %}
                 {% if has_borrowed %}
                 <form action="{% url 'book.return' book.id %}" method="post">
                     {% csrf_token %}
@@ -67,11 +68,14 @@
                 </form>
                 {% endif %}
                 {% else %}
+
+                {% if not request.user.is_superuser %}
                 <p class="text-lg text-gray-700 mt-4">
                     <a href="{% url 'login' %}"
                         class="text-blue-500 hover:underline">Login</a> to
                     borrow this book.
                 </p>
+                {% endif %}
                 {% endif %}
             </div>
         </div>

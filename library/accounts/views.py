@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import login
 from django.views.generic import CreateView, DetailView
@@ -10,7 +10,7 @@ from .models import Student  # Ensure you're importing the correct model
 
 @login_required
 def profile(request):
-    return redirect(reverse("home"))
+    return render(template_name='accounts/account_details.html', request=request)
 
 class AccountsDetailView(LoginRequiredMixin, DetailView):
     model = Student  # Use the Student model instead of User

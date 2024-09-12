@@ -63,7 +63,7 @@
                             </form>
                         </li>
                         <li class="ml-4 text-white font-semibold">
-                            {{ user }}
+                            <a href="{% url 'profile' %}">{{ user }}</a>
                         </li>
                         {% else %}
                         <li class="nav-item">

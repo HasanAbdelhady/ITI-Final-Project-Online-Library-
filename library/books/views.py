@@ -31,12 +31,17 @@ class BookDetailView(DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         book = self.get_object()
-        student = self.request.user
         
+        if not self.request.user.is_superuser:
+            student = self.request.user
         # Check if the user has borrowed the book and not returned it
-        has_borrowed = BorrowedBook.objects.filter(book=book, student=student, return_date__isnull=True).exists()
-        
-        context['has_borrowed'] = has_borrowed
+            has_borrowed = BorrowedBook.objects.filter(book=book, student=student, return_date__isnull=True).exists()
+            context['has_borrowed'] = has_borrowed
+            context['is_student'] = True
+        else:
+            context['is_admin'] = self.request.user.is_superuser
+            context['is_student'] = False
+
         return context
 
 @method_decorator(login_required, name='dispatch')
