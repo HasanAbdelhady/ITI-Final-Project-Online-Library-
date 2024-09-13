@@ -1,4 +1,4 @@
-# **Online Library Simulator 📕 By Hasan Abdelhady - Amr Elstoohy - Abdelrahman Hamdy **
+# Online Library Simulator 📕 By Hasan Abdelhady - Amr Elstoohy - Abdelrahman Hamdy 
 
 ## **Home without logging in:**
 ![home](https://github.com/user-attachments/assets/20ed6ef2-3c55-485d-bd60-b7fad256b1c0)
