@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}
+Admin Dashboard
+{% endblock title %}
+{% block body %}
+<div class="flex justify-center bg-gray-100 min-h-screen py-10">
+  <div class="w-full max-w-5xl">
+    <table class="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+      <thead class="bg-green-800 text-white text-xl">
+        <tr>
+          <th class="py-4 px-6 font-semibold text-center">Student ID</th>
+          <th class="py-4 px-6 font-semibold text-center">Username</th>
+          <th class="py-4 px-6 font-semibold text-center">Books Borrowed</th>
+          <th class="py-4 px-6 font-semibold text-center">Date Borrowed</th>
+          <th class="py-4 px-6 font-semibold text-center">Return Date</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700 divide-y divide-gray-200">
+        {% for student in students %}
+        <tr class="hover:bg-gray-50 transition duration-300 ease-in-out">
+          <td class="py-4 font-medium text-center text-lg">
+            {{ student.id }}
+          </td>
+          <td class="py-4 font-medium text-center text-lg">
+            <a href="{%url 'accounts.profile' student.id%}">{{ student.username }}</a>
+          </td>
+          <td class="py-4 text-center">
+            {% for borrowed_book in student.borrowed_books_set.all %}
+              {{ borrowed_book.book.name }}<br>
+            {% endfor %}
+          </td>
+          <td class="py-4 text-center">
+            {% for borrowed_book in student.borrowed_books_set.all %}
+              {{ borrowed_book.date_borrowed }}<br>
+            {% endfor %}
+          </td>
+          <td class="py-4 text-center">
+            {% for borrowed_book in student.borrowed_books_set.all %}
+              {% if borrowed_book.return_date %}
+                {{ borrowed_book.return_date }}
+              {% else %}
+                <span class="text-red-500">Not Returned Yet</span>
+              {% endif %}
+              <br>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,43 @@
+{% extends "layouts/base.html" %}
+{% block title %}
+Edit Your Category
+{% endblock title %}
+{% load static %}
+{% block body %}
+<div class="flex items-center justify-center bg-gray-100 min-h-screen py-12">
+    <div
+        class="w-full max-w-lg bg-white p-8 ring-2 ring-gray-300 shadow-lg rounded-lg">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+            Edit Category: {{ category.name }}
+        </h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-4">
+                <label for="{{ field.id_for_label }}"
+                    class="block text-gray-700 font-semibold mb-2">
+                    {{ field.label_tag }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                <p class="text-red-500 text-sm mt-1">
+                    {{ field.errors.as_text }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center mt-6">
+                <button type="submit"
+                    class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-md transition-transform transform hover:scale-105 duration-300 shadow-md">
+                    Save Changes
+                </button>
+                <a href="{% url 'home' %}"
+                    class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-md transition-transform transform hover:scale-105 duration-300 shadow-md">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

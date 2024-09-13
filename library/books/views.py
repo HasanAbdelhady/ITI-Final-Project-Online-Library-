@@ -115,3 +115,24 @@ class CategoryListView(ListView):
     model = Category
     template_name = 'categories/category_list.html'
     context_object_name = 'categories'
+
+@method_decorator(login_required, name='dispatch')
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'categories/category_details.html'
+    context_object_name = 'category'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_superuser, login_url=reverse_lazy('home')), name='dispatch')
+class UpdateCategory(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'categories/edit_category.html'
+    success_url = reverse_lazy('category_list')
+

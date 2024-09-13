@@ -1,13 +1,18 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404, Http404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import login
 from django.views.generic import CreateView, DetailView, UpdateView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.forms import RegistrationForm, ProfileUpdateForm
 from .models import Student 
 from django.utils.decorators import method_decorator
+from django.views.generic import ListView
+from datetime import timedelta
+from django.contrib.auth.views import LogoutView, PasswordChangeDoneView
 
+def is_superuser(user):
+    return user.is_superuser
 
 @login_required
 def profile(request):
@@ -15,24 +20,35 @@ def profile(request):
     return redirect(url)
 
 class AccountsDetailView(LoginRequiredMixin, DetailView):
-    model = Student  # Use the Student model
+    model = Student
     template_name = 'accounts/account_details.html'
     context_object_name = 'student'
 
+    def get_object(self, queryset=None):
+        """Override this method to handle non-existing IDs"""
+        return get_object_or_404(Student, pk=self.kwargs.get('pk'))
+
     def get(self, request, *args, **kwargs):
+        """Override this method to handle 404 errors"""
+        try:
+            # Attempt to get the object; if it does not exist, get_object_or_404 will raise Http404
+            student = self.get_object()
+        except Http404:
+            # Redirect to the admin dashboard if the student does not exist
+            return redirect('students.data')
+        
+        # Proceed with normal processing if the object is found
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        student = self.get_object()  # Get the student object
-        form = ProfileUpdateForm(request.POST, instance=student)  # Handle profile update form
+        student = self.get_object()
+        form = ProfileUpdateForm(request.POST, instance=student)
 
         if form.is_valid():
-            form.save()  # Save the updated profile
-            return redirect('accounts.profile', pk=student.pk)  # Redirect to profile page
+            form.save()
+            return redirect('accounts.profile', pk=student.pk)
         else:
-            # If the form is invalid, render the page with errors
             return self.render_to_response(self.get_context_data(form=form))
-
 class AccountCreateView(CreateView):
     model = Student
     template_name = 'accounts/create.html'
@@ -57,3 +73,33 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('accounts.profile', kwargs={'pk': self.request.user.pk})
+    
+@method_decorator(login_required, name='dispatch')    
+@method_decorator(user_passes_test(is_superuser, login_url=reverse_lazy('home')), name='dispatch')
+class StudentBorrowedBooksListView(ListView):
+    model = Student
+    template_name = 'accounts/admin_dashboard.html'  # Your template
+    context_object_name = 'students'
+
+    def get_queryset(self):
+        # Prefetch related borrowed books to optimize queries
+        return Student.objects.prefetch_related('borrowed_books_set__book').order_by("id")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        students = context['students']
+        for student in students:
+            for borrowed_book in student.borrowed_books_set.all():
+                if borrowed_book.date_borrowed:
+                    borrowed_book.date_borrowed += timedelta(hours=3)
+                if borrowed_book.return_date:
+                    borrowed_book.return_date += timedelta(hours=3)
+        return context
+class CustomLogoutView(LogoutView):
+    def get_next_page(self):
+        return reverse_lazy('home') 
+
+class CustomPasswordChangeView(PasswordChangeDoneView):
+    def get_next_page(self):
+        return reverse_lazy('home')  
+

@@ -1,15 +1,39 @@
 {% extends "layouts/base.html" %}
-
+{% block title %}
+All Categories
+{% endblock title %}
 {% block body %}
-  <h2>Category List</h2>
-  {% if request.user.is_superuser%}
-  <a href="{% url 'category_add' %}">Add New Category</a>
-  {% endif %}
-  <ul>
-    {% for category in categories %}
-      <li>{{ category.name }} - {{ category.description }}</li>
-    {% empty %}
-      <li>No categories available.</li>
-    {% endfor %}
-  </ul>
+<div class="min-h-screen bg-gray-100 p-6">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Category List</h2>
+
+    {% if request.user.is_superuser %}
+    <div class="mb-6">
+      <a href="{% url 'category_add' %}"
+        class="text-blue-600 hover:text-blue-800 text-lg font-semibold">
+        Add New Category
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <ul class="space-y-4">
+        {% for category in categories %}
+        <li
+          class="flex justify-between items-center p-4 border border-gray-200 rounded-md hover:bg-slate-200 font-bold">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800"><a
+                href="{%url 'category.details' category.id%}">
+                {{ category.name}}</a></h2>
+            <p class="text-gray-600">{{ category.description }}</p>
+          </div>
+          <!-- Optionally, you can add action buttons here -->
+        </li>
+        {% empty %}
+        <li class="p-4 text-gray-600">No categories available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -2,18 +2,56 @@
 {% load static %}
 
 {% block body %}
-{{user}}
-<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="{{user.image_url}}" alt="Card image cap">
-    <div class="card-body">
-        <h5 class="card-title">{{user.name}}</h5>
-        <h5 class="card-title">{{user.id}}</h5>
-        <p class="card-text"> {{user.email}} </p>
+<div class="flex justify-center items-center h-dvh bg-gray-100">
+    <div class="mt-20 bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md mx-4 sm:mx-6 lg:mx-8">
+        
+        <!-- Back Icon to go back to 'students.data' -->
         {% if request.user.is_superuser %}
-        <a href="{%url 'password_change'%}" class="btn btn-primary">change password</a>
+        <div class="p-4">
+            <a href="{% url 'students.data' %}" class="flex items-center text-gray-700 hover:text-gray-900 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>Back to Admin Dashboard</span>
+            </a>
+        </div>
         {% endif %}
-        <a href="{%url 'profile_edit'%}" class="btn btn-primary">Edit</a>
+        
+        <!-- Profile Image Section -->
+        <div class="relative my-10">
+            <img class="w-fill h-fill object-cover object-center" src="{{ student.image_url }}" alt="Profile image"> 
+            <!-- Adjust width and height of image -->
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900 to-transparent opacity-50"></div>
+        </div>
+
+        <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-900">{{ student.name }}</h2>
+            <h3 class="text-lg font-semibold text-gray-700 mt-1">User ID: {{ student.id }}</h3>
+            <p class="text-gray-600 mt-2 font-bold">Email: {{ student.email }}</p>
+            <p class="text-gray-600 mt-2 font-bold">Borrowed Books:</p>
+            <ul class="list-disc pl-5">
+                {% for borrowed_book in student.borrowed_books_set.all %}
+                    {% if not borrowed_book.return_date %}
+                        <li class="mb-4 hover:scale-105 duration-500 list-none m-2">
+                            <a href="{% url 'book.details' borrowed_book.book.id %}" class="flex items-center">
+                                <img src="{{ borrowed_book.book.image_url }}" alt="{{ borrowed_book.book.name }}" class="w-16 h-16 object-cover mr-4">
+                                <!-- Fix image sizing -->
+                                <span>{{ borrowed_book.book.name }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            
+            {% if request.user == student %}
+                <!-- Show Change Password & Edit Profile only for the profile owner -->
+                <a href="{% url 'password_change' %}" class="mt-4 inline-block px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Change Password</a>
+                <a href="{% url 'profile_edit' %}" class="mt-2 inline-block px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">Edit Profile</a>
+            {% elif request.user.is_superuser %}
+                <!-- Superuser can see, but not change passwords -->
+                <p class="mt-4 text-gray-600">You are viewing this user's profile.</p>
+            {% endif %}
+        </div>
     </div>
 </div>
-
 {% endblock %}

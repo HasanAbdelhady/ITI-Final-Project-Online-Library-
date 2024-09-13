@@ -23,15 +23,13 @@ class BorrowedBook(models.Model):
     return_date = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Check if the book is being borrowed (i.e., it's a new borrow entry)
-        if not self.pk and self.book.copies_left > 0:  # Ensure there are copies left
+        if not self.pk and self.book.copies_left > 0:
             self.book.copies_left -= 1
-            self.book.save()  # Save the updated book copies
-        elif self.pk and self.return_date:  # If it's a return, increase the copies
+            self.book.save()
+        elif self.pk and self.return_date:
             self.book.copies_left += 1
             self.book.save()
         super().save(*args, **kwargs)
 
-
     def __str__(self):
-        return f"{self.book.name} borrowed by {self.student.username}"
+        return f"{self.book.name} borrowed by {self.student.username} on {self.date_borrowed:%Y-%m-%d}"

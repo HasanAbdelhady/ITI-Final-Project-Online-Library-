@@ -1,90 +1,80 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}{% endblock title %}</title>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-        <link rel="icon" href="{% static 'books/images/logo.png' %}" />
-    </head>
-    <body>
-        <nav class="w-full bg-gray-900 text-xl">
-            <div
-                class="max-w-screen-2xl flex flex-wrap items-center justify-center mx-auto">
-                <a href="{% url 'home' %}"
-                    class="flex items-center space-x-3 rtl:space-x-reverse mr-auto">
-                    <img src="{% static 'books/images/logo.png' %}"
-                        class="h-16 my-2 overflow-clip" alt="Flowbite Logo" />
-                </a>
-                <div class="hidden w-full md:block md:w-auto"
-                    id="navbar-default">
-                    <ul
-                        class="flex justify-center flex-grow w-full font-bold flex-col md:p-0 mt-2 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                        <li class="my-auto">
-                            <a href="{% url 'home' %}"
-                                class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-green-500"
-                                aria-current="page">Home</a>
-                        </li>
-                        <!--<li class="my-auto">
-                            <a href="#"
-                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Categories</a>
-                        </li>-->
-                        <li class="my-auto"></li>
-                            <a href="{% url 'category_list'%}"
-                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                                Categories</a>
-                        </li>
-                        {% if request.user.is_superuser %}
-                        <li class="my-auto">
-                            <a href="{% url 'book.add' %}"
-                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add
-                                Book</a>
-                        </li>
-                        
-                        <li class="my-auto">
-                            <a href="#"
-                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Admin
-                                Dashboard</a>
-                        </li>
-                        {% endif %}
-                        {% if request.user.is_authenticated %}
-                        <!--<li class="my-auto">
-                            <a href="#"
-                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Change
-                                Credentials</a>
-                        </li>-->
-                        <li class="nav-item">
-                            <form method="post" action="{% url 'logout' %}">
-                                {% csrf_token %}
-                                <input type="submit"
-                                    class="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md cursor-pointer"
-                                    value="Logout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="icon" href="{% static 'books/images/logo.png' %}" />
+</head>
+<body>
+    <nav class="w-full bg-gray-900 text-xl fixed z-10 ">
+        <div class="max-w-screen-2xl flex flex-wrap items-center justify-center mx-auto">
+            <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse mr-auto">
+                <img src="{% static 'books/images/logo.png' %}" class="h-16 my-2 overflow-clip" alt="Flowbite Logo" />
+            </a>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="flex justify-center flex-grow w-full font-bold flex-col md:p-0 mt-2 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <!-- Navigation Links -->
+                    <li class="my-auto">
+                        <a href="{% url 'home' %}" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-green-500" aria-current="page">Home</a>
+                    </li>
+                    <li class="my-auto">
+                        <a href="{% url 'category_list' %}" class="block my-auto py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Categories</a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                    <li class="my-auto">
+                        <a href="{% url 'book.add' %}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add Book</a>
+                    </li>
+                    <li class="my-auto">
+                        <a href="{% url 'students.data' %}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Admin Dashboard</a>
+                    </li>
+                    <li>
+                        <div class="mt-4 md:mt-0">
+                            <form id="searchForm" method="get" action="#" class="flex items-center">
+                                <input id="studentId" type="text" name="id" placeholder="Search Student by ID" class="px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600">Search</button>
                             </form>
-                        </li>
-                        <li class="ml-4 text-white font-semibold">
-                            <a href="{% url 'accounts.profile' user.id%}">{{ user }}</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a href="{% url 'login' %}"
-                                class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">Login</a>
-                        </li>
-                        <li class="nav-item ml-4">
-                            <a href="{% url 'register' %}"
-                                class="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md">Register</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item my-auto">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <input type="submit" class="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md cursor-pointer" value="Logout">
+                        </form>
+                    </li>
+                    <li class="ml-4 text-white font-semibold hover:text-slate-400 text-2xl hover:border-b-2 border-b-white">
+                        <a href="{% url 'accounts.profile' user.id %}">{{ user }}</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item my-auto">
+                        <a href="{% url 'login' %}" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">Login</a>
+                    </li>
+                    <li class="nav-item ml-4 my-auto">
+                        <a href="{% url 'register' %}" class="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-        </nav>
-        <div class="bg-gray-100 h-svh max-h-screen">
-            {% block body %}{% endblock body %}
         </div>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script
-            src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
-    </body>
+    </nav>
+    <div class="bg-gray-100 h-svh max-h-screen py-20 pb-10">
+        {% block body %}{% endblock body %}
+    </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        const studentId = document.getElementById('studentId').value;
+        if (studentId) {
+            // Redirect to the student profile URL with the correct path
+            window.location.href = `/accounts/profile/${studentId}/`;
+        }
+    });
+    </script>
+</body>
 </html>
