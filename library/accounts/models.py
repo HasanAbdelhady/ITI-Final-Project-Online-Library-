@@ -3,13 +3,12 @@ from django.db import models
 from books.models import Book
 from django.utils import timezone
 
-class Student(AbstractUser):  # Inherit from AbstractUser
+class Student(AbstractUser):
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     borrowed_books = models.ManyToManyField(Book, through='BorrowedBook')
 
     def __str__(self):
-        return self.username  # This comes from AbstractUser
-
+        return self.username  
     @property
     def image_url(self):
         return f'/media/{self.profile_image}'

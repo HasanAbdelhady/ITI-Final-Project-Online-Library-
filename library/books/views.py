@@ -26,13 +26,11 @@ class BookDetailView(DetailView):
     context_object_name = 'book'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         book = self.get_object()
         
         if not self.request.user.is_superuser:
             student = self.request.user
-        # Check if the user has borrowed the book and not returned it
             has_borrowed = BorrowedBook.objects.filter(book=book, student=student, return_date__isnull=True).exists()
             context['has_borrowed'] = has_borrowed
             context['is_student'] = True
@@ -78,7 +76,6 @@ class BorrowBookView(View):
         book = get_object_or_404(Book, id=book_id)
         student = request.user
 
-        # Check if the student has already borrowed this book
         if BorrowedBook.objects.filter(book=book, student=student, return_date__isnull=True).exists():
             messages.error(request, "You have already borrowed this book.")
         else:
@@ -93,7 +90,6 @@ class ReturnBookView(View):
         book = get_object_or_404(Book, id=book_id)
         student = request.user
 
-        # Find the borrowed book entry
         borrowed_book = BorrowedBook.objects.filter(book=book, student=student, return_date__isnull=True).first()
         if borrowed_book:
             borrowed_book.return_date = timezone.now()  # Mark as returned

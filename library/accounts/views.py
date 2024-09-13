@@ -31,13 +31,10 @@ class AccountsDetailView(LoginRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         """Override this method to handle 404 errors"""
         try:
-            # Attempt to get the object; if it does not exist, get_object_or_404 will raise Http404
             student = self.get_object()
         except Http404:
-            # Redirect to the admin dashboard if the student does not exist
             return redirect('students.data')
         
-        # Proceed with normal processing if the object is found
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -69,7 +66,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'accounts/edit_profile.html'
 
     def get_object(self):
-        return self.request.user  # Get the current logged-in user
+        return self.request.user 
 
     def get_success_url(self):
         return reverse_lazy('accounts.profile', kwargs={'pk': self.request.user.pk})
@@ -78,11 +75,10 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 @method_decorator(user_passes_test(is_superuser, login_url=reverse_lazy('home')), name='dispatch')
 class StudentBorrowedBooksListView(ListView):
     model = Student
-    template_name = 'accounts/admin_dashboard.html'  # Your template
+    template_name = 'accounts/admin_dashboard.html'
     context_object_name = 'students'
 
     def get_queryset(self):
-        # Prefetch related borrowed books to optimize queries
         return Student.objects.prefetch_related('borrowed_books_set__book').order_by("id")
     
     def get_context_data(self, **kwargs):

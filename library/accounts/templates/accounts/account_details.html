@@ -20,7 +20,6 @@
         <!-- Profile Image Section -->
         <div class="relative my-10">
             <img class="w-fill h-fill object-cover object-center" src="{{ student.image_url }}" alt="Profile image"> 
-            <!-- Adjust width and height of image -->
             <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900 to-transparent opacity-50"></div>
         </div>
 
@@ -35,7 +34,6 @@
                         <li class="mb-4 hover:scale-105 duration-500 list-none m-2">
                             <a href="{% url 'book.details' borrowed_book.book.id %}" class="flex items-center">
                                 <img src="{{ borrowed_book.book.image_url }}" alt="{{ borrowed_book.book.name }}" class="w-16 h-16 object-cover mr-4">
-                                <!-- Fix image sizing -->
                                 <span>{{ borrowed_book.book.name }}</span>
                             </a>
                         </li>
@@ -44,7 +42,6 @@
             </ul>
             
             {% if request.user == student %}
-                <!-- Show Change Password & Edit Profile only for the profile owner -->
                 <a href="{% url 'password_change' %}" class="mt-4 inline-block px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Change Password</a>
                 <a href="{% url 'profile_edit' %}" class="mt-2 inline-block px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">Edit Profile</a>
             {% elif request.user.is_superuser %}
