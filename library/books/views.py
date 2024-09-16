@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, CreateView, UpdateView, ListView
 from .forms import BookForm, CategoryForm
