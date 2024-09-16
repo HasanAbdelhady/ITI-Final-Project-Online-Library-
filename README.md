@@ -58,7 +58,7 @@
 ![edit category](https://github.com/user-attachments/assets/f89bc73f-e842-46da-878f-0a9d7ed0311d)
 
 ## **Admin Dashboard:**
-**Shows all users and every transaction they've done since logging in ( Date of Borrowing each book and the return date ), if the student hasn't returned the book yet it's marked by "![#f03c15]Not Returned Yet"`#f03c15` in red**
+**Shows all users and every transaction they've done since logging in ( Date of Borrowing each book and the return date ), if the student hasn't returned the book yet it's marked by "Not Returned Yet" in red**
 ![admin dashboard](https://github.com/user-attachments/assets/96e9c2ed-1170-4e4c-994e-cbe665830085)
 
 ## **View users data from admin Dashboard:**
