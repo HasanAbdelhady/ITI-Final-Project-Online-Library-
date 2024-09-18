@@ -99,7 +99,7 @@
 ---
 
 ## **Admin Dashboard:**
-**Shows all users and every transaction they've done since logging in (Date of Borrowing each book and the return date). If the student hasn't returned the book yet, it's marked by** <span style="color:red">**"Not Returned Yet"**</span>.
+**Shows all users and every transaction they've done since logging in (Date of Borrowing each book and the return date). If the student hasn't returned the book yet, it's marked by ****"Not Returned Yet"****.
 
 ![admin dashboard](https://github.com/user-attachments/assets/96e9c2ed-1170-4e4c-994e-cbe665830085)
 
